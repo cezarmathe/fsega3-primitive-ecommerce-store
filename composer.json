@@ -1,0 +1,17 @@
+{
+    "name": "cezarmathe/sample-ecommerce-store",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "ECommerce\\App\\": "app/",
+            "ECommerce\\Public\\": "public/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Armand-Cezar Mathe",
+            "email": "me@cezarmathe.com"
+        }
+    ],
+    "require": {}
+}

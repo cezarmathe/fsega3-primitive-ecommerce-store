@@ -1,0 +1,82 @@
+/* public/style.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+
+html {
+  font-family: Inter;
+  color: black;
+}
+
+body {
+  margin: 0 auto;
+  padding: 0;
+}
+
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+}
+
+.navbar {
+  display: flex;
+  box-shadow: 0 0 2px 0 grey;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1em;
+  background-color:#3761af;
+  color: white;
+}
+
+.navbar-greeting {
+  font-weight: 900;
+}
+
+.navbar-item {
+  margin: 0 1em;
+  padding: 2rem;
+  text-decoration: none;
+  color: white;
+}
+
+.navbar-item:hover {
+  background-color: #2a4e8c;
+}
+
+.navbar-right {
+  margin: 0 0 0 auto;
+}
+
+/*
+.navbar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  height: 10vh;
+  width: 100vw;
+  background-color: #f5f5f5;
+  padding: 0 5vw;
+}
+
+.navbar span {
+  font-size: 1.5rem;
+  font-weight: 600;
+  padding: auto;
+  margin: auto;
+}
+
+.navbar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar li {
+  display: inline-block;
+  margin: 0 1vw;
+}
+*/
