@@ -23,6 +23,7 @@ class Navbar implements Component {
         <nav class="navbar">
             <a href="/index.php" class="navbar-item">Home</a>
             <a href="/cart.php" class="navbar-item">Cart: {$this->cartItemsCount}</a>
+            <a href="/orders.php " class="navbar-item">Orders</a>
             <a href="/logout.php" class="navbar-item">Logout</a>
         </nav>
         EOF;

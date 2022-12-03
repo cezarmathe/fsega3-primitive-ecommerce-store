@@ -5,13 +5,14 @@ namespace ECommerce\App\Entity;
 use ECommerce\App\Entity\Entity;
 
 class User implements Entity {
-    public $id;
+    public string $id;
 
-    public $first_name;
-    public $last_name;
+    public string $firstName;
+    public string $lastName;
+    public string $email;
+    public string $password;
 
-    public $email;
-    public $password;
+    public bool $isAdmin;
 
     public static function fromArray(array $row, string $qualifier = ''): User {
         $qualifier = $qualifier ? $qualifier . '.' : '';
@@ -20,11 +21,16 @@ class User implements Entity {
 
         $user->id = $row[$qualifier . 'id'];
 
-        $user->first_name = $row[$qualifier . 'first_name'];
-        $user->last_name = $row[$qualifier . 'last_name'];
-
+        $user->firstName = $row[$qualifier . 'first_name'];
+        $user->lastName = $row[$qualifier . 'last_name'];
         $user->email = $row[$qualifier . 'email'];
         $user->password = $row[$qualifier . 'password'];
+
+        if ($row[$qualifier . 'is_admin'] == 't') {
+            $user->isAdmin = true;
+        } else {
+            $user->isAdmin = false;
+        }
 
         return $user;
     }
@@ -33,11 +39,27 @@ class User implements Entity {
         return [
             'id' => $this->id,
 
-            'first_name' => $this->first_name,
-            'last_name' => $this->last_name,
-
+            'first_name' => $this->firstName,
+            'last_name' => $this->lastName,
             'email' => $this->email,
             'password' => $this->password,
+
+            'is_admin' => $this->isAdmin,
+        ];
+    }
+
+    public static function columns(string $qualifier = ''): array {
+        $qualifier = $qualifier ? $qualifier . '.' : '';
+
+        return [
+            $qualifier . 'id',
+
+            $qualifier . 'first_name',
+            $qualifier . 'last_name',
+            $qualifier . 'email',
+            $qualifier . 'password',
+
+            $qualifier . 'is_admin',
         ];
     }
 }

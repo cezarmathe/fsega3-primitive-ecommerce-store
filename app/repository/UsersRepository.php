@@ -24,8 +24,8 @@ class UsersRepository extends BaseRepository {
         values ($1, $2, $3, $4)
         EOF;
         $result = $this->query($q, [
-            $user->first_name,
-            $user->last_name,
+            $user->firstName,
+            $user->lastName,
             $user->email,
             $user->password
         ]);

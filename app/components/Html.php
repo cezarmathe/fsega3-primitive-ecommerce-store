@@ -6,10 +6,10 @@ use ECommerce\App\Components\Component;
 
 class Html implements Component {
     private Head $head;
-    private Navbar | null $navbar;
+    private Component | null $navbar;
     private Component $main;
 
-    public function __construct(Head $head, Navbar $navbar, Component $main) {
+    public function __construct(Head $head, Component | null $navbar, Component $main) {
         $this->head = $head;
         $this->navbar = $navbar;
         $this->main = $main;
@@ -21,7 +21,13 @@ class Html implements Component {
             {$this->head->render()}
             <body>
                 <div class="app">
-                    {$this->navbar->render()}
+        EOF;
+
+        if ($this->navbar) {
+            $html .= $this->navbar->render();
+        }
+
+        $html .= <<<EOF
                     <main>
                         {$this->main->render()}
                     </main>

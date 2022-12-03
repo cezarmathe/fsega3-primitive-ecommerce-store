@@ -36,4 +36,17 @@ class Product implements Entity {
             'image_url' => $this->imageURL,
         ];
     }
+
+    public static function columns(string $qualifier = ''): array {
+        $qualifier = $qualifier ? $qualifier . '.' : '';
+
+        return [
+            $qualifier . 'id',
+
+            $qualifier . 'name',
+            $qualifier . 'price',
+            $qualifier . 'description',
+            $qualifier . 'image_url',
+        ];
+    }
 }

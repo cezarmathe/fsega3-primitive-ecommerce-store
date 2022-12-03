@@ -8,18 +8,20 @@ use ECommerce\App\Repository\BaseRepository;
 class CartsRepository extends BaseRepository {
     // Insert a new cart for the user or return an existing one.
     public function upsert(string $userID): Cart {
+        $cols= implode(', ', Cart::columns());
         $q = <<<EOF
         insert into carts (user_id)
         values ($1)
-        on conflict (user_id) do update set updated_at = current_timestamp
-        returning *
+        on conflict (user_id) where ordered_at is null
+        do update set updated_at = current_timestamp
+        returning ${cols}
         EOF;
 
         $result = $this->query($q, [$userID]);
 
         $row = pg_fetch_assoc($result);
         if (!$row) {
-            throw new \Exception('User not found.');
+            throw new \Exception('Cart not found.');
         }
 
         return Cart::fromArray($row);

@@ -7,8 +7,11 @@ use ECommerce\App\Entity\Entity;
 class CartItem implements Entity {
     public int $id;
 
-    public int $cart_id;
-    public int $product_id;
+    public int $cartID;
+    public Cart $cart;
+
+    public int $productID;
+    public Product $product;
 
     public int $quantity;
 
@@ -19,8 +22,8 @@ class CartItem implements Entity {
 
         $cartItem->id = $row[$qualifier . 'id'];
 
-        $cartItem->cart_id = $row[$qualifier . 'cart_id'];
-        $cartItem->product_id = $row[$qualifier . 'product_id'];
+        $cartItem->cartID = $row[$qualifier . 'cart_id'];
+        $cartItem->productID = $row[$qualifier . 'product_id'];
 
         $cartItem->quantity = $row[$qualifier . 'quantity'];
 
@@ -31,10 +34,23 @@ class CartItem implements Entity {
         return [
             'id' => $this->id,
 
-            'cart_id' => $this->cart_id,
-            'product_id' => $this->product_id,
+            'cart_id' => $this->cartID,
+            'product_id' => $this->productID,
 
             'quantity' => $this->quantity,
+        ];
+    }
+
+    public static function columns(string $qualifier = ''): array {
+        $qualifier = $qualifier ? $qualifier . '.' : '';
+
+        return [
+            $qualifier . 'id',
+
+            $qualifier . 'cart_id',
+            $qualifier . 'product_id',
+
+            $qualifier . 'quantity',
         ];
     }
 }

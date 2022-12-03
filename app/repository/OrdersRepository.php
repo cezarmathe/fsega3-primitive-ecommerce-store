@@ -19,7 +19,7 @@ class OrdersRepository extends BaseRepository {
     }
 
     // Find an order by ID.
-    public function findByID(string $id) : Order {
+    public function findByID(string $id): Order {
         $result = $this->query('select * from orders WHERE id = $1', [$id]);
 
         $row = pg_fetch_assoc($result);
@@ -31,10 +31,12 @@ class OrdersRepository extends BaseRepository {
     }
 
     // Save saves an order in the database.
-    public function save(Order $order) {
+    public function save(Order $order): Order {
+        $cols = implode(', ', Order::columns());
         $q = <<<EOF
         insert into orders (cart_id, user_id, total)
         values ($1, $2, $3)
+        returning ${cols}
         EOF;
         $result = $this->query($q, [
             $order->cart_id,
@@ -46,6 +48,11 @@ class OrdersRepository extends BaseRepository {
             throw new \Exception('Failed to save order: ' . pg_last_error());
         }
 
-        return;
+        $row = pg_fetch_assoc($result);
+        if (!$row) {
+            throw new \Exception('Failed to save order: ' . pg_last_error());
+        }
+
+        return Order::fromArray($row);
     }
 }

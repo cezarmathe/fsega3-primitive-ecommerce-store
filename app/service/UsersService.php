@@ -62,8 +62,8 @@ class UsersService {
     public function create($first_name, $last_name, $email, $password) {
         $user = new User();
 
-        $user->first_name = $first_name;
-        $user->last_name = $last_name;
+        $user->firstName = $first_name;
+        $user->lastName = $last_name;
         $user->email = $email;
         $user->password = password_hash($password, PASSWORD_DEFAULT);
 

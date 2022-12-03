@@ -9,12 +9,13 @@ use ECommerce\App\Repository\BaseRepository;
 class CartItemsRepository extends BaseRepository {
     // Inserts a new cart item or updates an existing one.
     public function upsert(CartItem $cartItem): CartItem {
+        $cols = implode(', ', CartItem::columns());
         $q = <<<EOF
         insert into cart_items (cart_id, product_id, quantity)
         values ($1, $2, $3)
         on conflict (cart_id, product_id) do update
         set quantity = cart_items.quantity + EXCLUDED.quantity
-        returning *
+        returning ${cols}
         EOF;
         $result = $this->query($q, [
             $cartItem->cart_id,

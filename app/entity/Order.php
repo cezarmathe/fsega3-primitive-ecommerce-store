@@ -5,9 +5,11 @@ namespace ECommerce\App\Entity;
 use ECommerce\App\Entity\Entity;
 
 class Order implements Entity {
-    public $id;
+    public string $id;
 
-    public $user_id;
+    public string $userID;
+    public string $cartID;
+    public Cart $cart;
 
     public static function fromArray(array $row, string $qualifier = ''): Order {
         $qualifier = $qualifier ? $qualifier . '.' : '';
@@ -16,7 +18,8 @@ class Order implements Entity {
 
         $order->id = $row[$qualifier . 'id'];
 
-        $order->user_id = $row[$qualifier . 'user_id'];
+        $order->userID= $row[$qualifier . 'user_id'];
+        $order->cartID = $row[$qualifier . 'cart_id'];
 
         return $order;
     }
@@ -25,7 +28,19 @@ class Order implements Entity {
         return [
             'id' => $this->id,
 
-            'user_id' => $this->user_id,
+            'user_id' => $this->userID,
+            'cart_id' => $this->cartID,
+        ];
+    }
+
+    public static function columns(string $qualifier = ''): array {
+        $qualifier = $qualifier ? $qualifier . '.' : '';
+
+        return [
+            $qualifier . 'id',
+
+            $qualifier . 'user_id',
+            $qualifier . 'cart_id',
         ];
     }
 }

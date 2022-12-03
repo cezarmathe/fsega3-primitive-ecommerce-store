@@ -22,6 +22,17 @@ class CartService {
         return $this->cartsRepository->upsert($user->id);
     }
 
+    // Load the items in the cart.
+    public function loadItems(Cart $cart): array {
+        $items = $this->cartItemsRepository->list($cart->id);
+
+        foreach ($items as $item) {
+            $item->cart = $cart;
+        }
+
+        return $items;
+    }
+
     // Returns the number of items in the cart.
     public function countItems(Cart $cart): int {
         return $this->cartItemsRepository->count($cart->id);

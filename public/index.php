@@ -4,6 +4,8 @@ namespace ECommerce\Public;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use ECommerce\App\Components\AddProductForm;
+use ECommerce\App\Components\AdminNavbar;
 use ECommerce\App\Entity\Cart;
 use ECommerce\App\Entity\User;
 use ECommerce\App\Repository\UsersRepository;
@@ -42,9 +44,20 @@ $cartItemsCount = $cartService->countItems($cart);
 
 // Build the page.
 
-$head = new Head('Home');
-$navbar = new Navbar($user, $cart, $cartItemsCount);
+$head = null;
+$main = null;
+$navbar = null;
 
-$html = new Html($head, $navbar, new ProductsList($products));
+if ($user->isAdmin === true) {
+    $head = new Head('Add product');
+    $navbar = new AdminNavbar();
+    $main = new AddProductForm();
+} else {
+    $head = new Head('Home');
+    $navbar = new Navbar($user, $cart, $cartItemsCount);
+    $main = new ProductsList($products);
+}
+
+$html = new Html($head, $navbar, $main);
 
 echo $html->render();
