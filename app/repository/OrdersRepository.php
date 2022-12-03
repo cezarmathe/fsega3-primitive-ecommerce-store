@@ -5,9 +5,9 @@ namespace ECommerce\App\Repository;
 use ECommerce\App\Entity\Order;
 
 class OrdersRepository extends BaseRepository {
-    // List the orders of an users.
-    public function list(string $userID) : array {
-        $result = $this->query('select * from orders WHERE user_id = $1', [$userID]);
+    // List the orders of an user.
+    public function loadByUserID(string $userID) : array {
+        $result = $this->query('select * from orders where user_id = $1', [$userID]);
 
         $orders = [];
 
@@ -34,14 +34,13 @@ class OrdersRepository extends BaseRepository {
     public function save(Order $order): Order {
         $cols = implode(', ', Order::columns());
         $q = <<<EOF
-        insert into orders (cart_id, user_id, total)
-        values ($1, $2, $3)
+        insert into orders (cart_id, user_id)
+        values ($1, $2)
         returning ${cols}
         EOF;
         $result = $this->query($q, [
-            $order->cart_id,
-            $order->user_id,
-            $order->total
+            $order->cartID,
+            $order->userID,
         ]);
 
         if (pg_affected_rows($result) != 1) {

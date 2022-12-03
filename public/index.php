@@ -4,6 +4,7 @@ namespace ECommerce\Public;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use ECommerce\App\App;
 use ECommerce\App\Components\AddProductForm;
 use ECommerce\App\Components\AdminNavbar;
 use ECommerce\App\Entity\Cart;
@@ -22,25 +23,13 @@ use ECommerce\App\Service\CartService;
 
 session_start();
 
-// Initialize repositories.
+$app = new App();
 
-$cartItemsRepository = new CartItemsRepository();
-$cartsRepository = new CartsRepository();
-$productsRepository = new ProductsRepository();
-$userRepository = new UsersRepository();
+$user = $app->usersService->assert();
 
-// Initialize services.
-
-$cartService = new CartService($cartsRepository, $cartItemsRepository);
-$userService = new UsersService($userRepository);
-
-// Load the data required for building the page.
-
-$user = $userService->assert();
-
-$products = $productsRepository->list();
-$cart = $cartService->load($user);
-$cartItemsCount = $cartService->countItems($cart);
+$products = $app->productsRepository->list();
+$cart = $app->cartService->load($user);
+$cartItemsCount = $app->cartService->countItems($cart);
 
 // Build the page.
 

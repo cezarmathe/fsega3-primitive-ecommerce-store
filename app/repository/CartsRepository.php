@@ -42,4 +42,41 @@ class CartsRepository extends BaseRepository {
 
         return;
     }
+
+    public function findByID(string $cartID): Cart {
+        $cols = implode(', ', Cart::columns());
+        $q = <<<EOF
+        select ${cols}
+        from carts
+        where id = $1
+        EOF;
+
+        $result = $this->query($q, [$cartID]);
+
+        $row = pg_fetch_assoc($result);
+        if (!$row) {
+            throw new \Exception('Cart not found.');
+        }
+
+        return Cart::fromArray($row);
+    }
+
+    public function checkout(Cart $cart): Cart {
+        $cols = implode(', ', Cart::columns());
+        $q = <<<EOF
+        update carts
+        set ordered_at = current_timestamp
+        where id = $1
+        returning ${cols}
+        EOF;
+
+        $result = $this->query($q, [$cart->id]);
+
+        $row = pg_fetch_assoc($result);
+        if (!$row) {
+            throw new \Exception('Failed to checkout cart.');
+        }
+
+        return Cart::fromArray($row);
+    }
 }

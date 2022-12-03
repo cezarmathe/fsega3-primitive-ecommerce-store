@@ -17,7 +17,6 @@ class OrdersList implements Component {
                 <thead>
                     <tr>
                         <th>Order ID</th>
-                        <th>Order Date</th>
                         <th>Order Total</th>
                     </tr>
                 </thead>
@@ -25,12 +24,17 @@ class OrdersList implements Component {
         EOF;
 
         foreach ($this->orders as $order) {
+            $total = 0;
+
+            foreach ($order->cart->items as $item) {
+                $total += $item->product->price * $item->quantity;
+            }
+
             $html .= <<<EOF
             <a href="/order.php?id={$order->id}">
                 <tr>
                     <td>{$order->id}</td>
-                    <td>{$order->date}</td>
-                    <td>{$order->total}</td>
+                    <td>{$total}</td>
                 </tr>
             EOF;
         }

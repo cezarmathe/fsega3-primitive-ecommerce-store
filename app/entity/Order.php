@@ -5,10 +5,10 @@ namespace ECommerce\App\Entity;
 use ECommerce\App\Entity\Entity;
 
 class Order implements Entity {
-    public string $id;
+    public int $id;
 
-    public string $userID;
-    public string $cartID;
+    public int $userID;
+    public int  $cartID;
     public Cart $cart;
 
     public static function fromArray(array $row, string $qualifier = ''): Order {

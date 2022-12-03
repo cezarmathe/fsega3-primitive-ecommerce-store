@@ -4,37 +4,37 @@ namespace ECommerce\Public;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use ECommerce\App\Entity\Cart;
-use ECommerce\App\Repository\UsersRepository;
-use ECommerce\App\Service\UsersService;
+use ECommerce\App\App;
+use ECommerce\App\Components\ProductSpotlight;
 use ECommerce\App\Components\Head;
+use ECommerce\App\Components\Html;
 use ECommerce\App\Components\Navbar;
 
 session_start();
 
-$repository = new UsersRepository();
-$userService = new UsersService($repository);
+$app = new App();
 
-$user = $userService->assert();
+$user = $app->usersService->assert();
 
-// load products
-// load cart
+$cart = $app->cartService->load($user);
+$cartItems = $app->cartService->loadItems($cart);
+$cartItemsCount = $app->cartService->countItems($cart);
 
-$cart = new Cart();
+$product_id = $_GET['id'] ?? null;
+if ($product_id === null) {
+    $referer = $_SERVER['HTTP_REFERER'] ?? 'index.php';
+    header("Location: $referer");
+    exit;
+}
 
-$head = new Head('Home');
-$navbar = new Navbar($user, $cart);
+$product = $app->productsRepository->findByID($product_id);
 
-?>
+// Build the page.
 
-<html>
-    <?php echo $head->render() ?>
+$head = new Head($product->name);
+$navbar = new Navbar($user, $cart, $cartItemsCount);
+$main = new ProductSpotlight($product);
 
-    <body>
-        <div class="app">
-            <?php echo $navbar->render() ?>
+$html = new Html($head, $navbar, $main);
 
-            <h1>Your cart</h1>
-        </div>
-    </body>
-</html>
+echo $html->render();

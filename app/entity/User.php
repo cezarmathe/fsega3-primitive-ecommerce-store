@@ -5,7 +5,7 @@ namespace ECommerce\App\Entity;
 use ECommerce\App\Entity\Entity;
 
 class User implements Entity {
-    public string $id;
+    public int $id;
 
     public string $firstName;
     public string $lastName;
